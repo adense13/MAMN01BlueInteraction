@@ -27,7 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
         </activity>
+        <service android:name=".GeofenceTransitionsIntentService"/>
     </application>
+
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 

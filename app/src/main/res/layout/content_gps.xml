@@ -46,4 +46,24 @@
         android:layout_toRightOf="@+id/longitude"
         android:textSize="16sp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add_geofences_button"
+        android:id="@+id/add_geofences_button"
+        android:layout_below="@+id/longitude"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="addGeofencesButtonHandler" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="remove_geofences_button"
+        android:id="@+id/remove_geofences_button"
+        android:layout_below="@+id/add_geofences_button"
+        android:layout_alignRight="@+id/add_geofences_button"
+        android:layout_alignEnd="@+id/add_geofences_button"
+        android:onClick="removeGeofencesButtonHandler" />
+
 </RelativeLayout>
