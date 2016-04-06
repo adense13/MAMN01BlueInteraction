@@ -1,6 +1,7 @@
 package blueinteraction.mamn01blueinteraction;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -147,7 +148,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mLongitudeTextView.setText(String.valueOf(location.getLongitude()));
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        Toast.makeText(this, "Updated: " + mLastUpdateTime, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Updated: " + mLastUpdateTime, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -362,5 +363,6 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             mRemoveGeofencesButton.setEnabled(false);
         }
     }
+
 
 }

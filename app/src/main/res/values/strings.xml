@@ -13,9 +13,9 @@
     <string name="geofence_too_many_geofences">geofence_too_many_geofences</string>
     <string name="geofence_too_many_pending_intents">geofence_too_many_pending_intents</string>
     <string name="unknown_geofence_error">unknown_geofence_error</string>
-    <string name="geofence_transition_notification_text" />
-    <string name="geofence_transition_entered" />
-    <string name="geofence_transition_exited" />
-    <string name="unknown_geofence_transition" />
-    <string name="geofence_transition_invalid_type" />
+    <string name="geofence_transition_notification_text">Click notification to return to app</string>
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unkown transition</string>
+    <string name="geofence_transition_invalid_type">Invalid transition type</string>
 </resources>

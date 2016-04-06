@@ -63,5 +63,8 @@ public final class Constants {
 
         //Tobbz
         BAY_AREA_LANDMARKS.put("Tobbes hus", new LatLng(55.718162, 13.198172));
+
+        //IKDC
+        BAY_AREA_LANDMARKS.put("IKDC", new LatLng(55.715098, 13.212961));
     }
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -77,6 +78,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
             // Send notification and log the transition details.
             sendNotification(geofenceTransitionDetails);
+            //Toast.makeText(this, geofenceTransitionDetails, Toast.LENGTH_SHORT).show();
             Log.i(TAG, geofenceTransitionDetails);
         } else {
             // Log the error.
@@ -115,13 +117,13 @@ public class GeofenceTransitionsIntentService extends IntentService {
      */
     private void sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), GPSActivity.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(GPSActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
