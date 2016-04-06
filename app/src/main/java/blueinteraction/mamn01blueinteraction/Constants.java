@@ -45,7 +45,7 @@ public final class Constants {
      */
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 50; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 100; // 1 mile, 1.6 km
 
     /**
      * Map for storing information about airports in the San Francisco bay area.
@@ -56,6 +56,12 @@ public final class Constants {
         BAY_AREA_LANDMARKS.put("KH", new LatLng(55.7124056, 13.2090622));
 
         // Googleplex.
-        BAY_AREA_LANDMARKS.put("GOOGLE", new LatLng(55.7124056, 13.2090622));
+        BAY_AREA_LANDMARKS.put("KH2", new LatLng(55.7124056, 13.2090622));
+
+        //Vildanden
+        BAY_AREA_LANDMARKS.put("Vildis", new LatLng(55.710694, 13.169511));
+
+        //Tobbz
+        BAY_AREA_LANDMARKS.put("Tobbes hus", new LatLng(55.718162, 13.198172));
     }
 }
