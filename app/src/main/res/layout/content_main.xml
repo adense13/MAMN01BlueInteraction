@@ -34,7 +34,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vibration Test"
+            android:text="Test Vibration"
             android:id="@+id/buttonVibration"
             android:onClick="testVibration" />
 

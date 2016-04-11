@@ -1,7 +1,10 @@
 package blueinteraction.mamn01blueinteraction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -48,11 +51,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
     }
 
-    public void testVibration(){
-        //add code here
+    public void testVibration(View view){
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
     }
 
-    public void testSound(){
-        //add code here
+    public void testSound(View view){
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound1);
+        mp.start();
     }
 }
