@@ -47,4 +47,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, GPSActivity.class);
             startActivity(intent);
     }
+
+    public void testVibration(){
+        //add code here
+    }
+
+    public void testSound(){
+        //add code here
+    }
 }

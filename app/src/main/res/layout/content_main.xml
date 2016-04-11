@@ -30,6 +30,20 @@
             android:text="Start"
             android:id="@+id/button"
             android:onClick="clickToGPS" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vibration Test"
+            android:id="@+id/buttonVibration"
+            android:onClick="testVibration" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sound Test"
+            android:id="@+id/buttonSound"
+            android:onClick="testSound" />
     </LinearLayout>
 
 </RelativeLayout>
