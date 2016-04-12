@@ -61,4 +61,9 @@ public class MainActivity extends AppCompatActivity {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound1);
         mp.start();
     }
+
+    public void testCompass(View view){
+        Intent intent = new Intent(this, CompassActivity.class);
+        startActivity(intent);
+    }
 }

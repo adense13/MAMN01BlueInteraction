@@ -44,6 +44,13 @@
             android:text="Sound Test"
             android:id="@+id/buttonSound"
             android:onClick="testSound" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Compass Test"
+            android:id="@+id/buttonCompass"
+            android:onClick="testCompass" />
     </LinearLayout>
 
 </RelativeLayout>
