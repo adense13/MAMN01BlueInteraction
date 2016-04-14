@@ -66,4 +66,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CompassActivity.class);
         startActivity(intent);
     }
+
+    public void testFeedback(View view){
+        Feedback fb = new Feedback();
+        fb.mediaLoop();
+    }
 }
