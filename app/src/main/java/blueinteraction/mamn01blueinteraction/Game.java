@@ -13,16 +13,19 @@ public class Game {
     private Location startLocation, checkpointLocation, currentLocation;
     private double minDistance, radius;
     private ArrayList<Location> checkpointList;
+    long timeStart;
 
     /*
      * Create a new Game object
      * @param startLocation sent by the Activity
      * @param radius, the radius aka size of game field
      */
-    public Game(Location startLocation, double radius){
+    public Game(Location startLocation, double radius, double minDistance){
         this.startLocation = startLocation;
         this.radius = radius;
+        this.minDistance = minDistance;
         checkpointList = new ArrayList<Location>();
+        timeStart = System.currentTimeMillis();
     }
 
     /*
@@ -79,5 +82,9 @@ public class Game {
      */
     public ArrayList<Location> getCheckpointList(){
         return checkpointList;
+    }
+
+    public long getTimeStart(){
+        return timeStart;
     }
 }

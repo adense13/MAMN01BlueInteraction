@@ -19,4 +19,6 @@
     <string name="unknown_geofence_transition">Unkown transition</string>
     <string name="geofence_transition_invalid_type">Invalid transition type</string>
     <string name="title_activity_compass">CompassActivity</string>
+
+
 </resources>

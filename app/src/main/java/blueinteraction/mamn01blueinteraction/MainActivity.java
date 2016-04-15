@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testFeedback(View view){
-        Feedback fb = new Feedback();
-        fb.mediaLoop();
+        //Feedback fb = new Feedback();
+        //fb.mediaLoop();
     }
 }

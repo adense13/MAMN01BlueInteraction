@@ -34,6 +34,9 @@ public final class Constants {
 
     public static final String GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY";
 
+    public static final double GAME_RADIUS = 0.01; //1km approx
+    public static final double GAME_CHECKPOINT_MINDISTANCE = 0.001; //110m approx
+
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
      * stops tracking the geofence.

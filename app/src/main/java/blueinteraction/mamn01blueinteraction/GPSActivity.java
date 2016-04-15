@@ -53,6 +53,11 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     Location testLocation, ourLocation;
     //END COMPASS
 
+    //GAME
+    Game game;
+    Feedback feedback;
+    //END GAME
+
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private String mLastUpdateTime;
@@ -93,44 +98,17 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+        initViews();
 
-        mLatitudeTextView = (TextView) findViewById((R.id.latitude_textview));
-        mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
+        //GEOFENCE----------------------------------
+        initGeofence();
 
-        // Get the UI widgets.
-        mAddGeofencesButton = (Button) findViewById(R.id.add_geofences_button);
-        mRemoveGeofencesButton = (Button) findViewById(R.id.remove_geofences_button);
+        //GPS----------------------------------
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
 
-        // Empty list for storing geofences.
-        mGeofenceList = new ArrayList<Geofence>();
-
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
-
-        // Retrieve an instance of the SharedPreferences object.
-        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,
-                MODE_PRIVATE);
-
-        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-        setButtonsEnabledState();
-
-        // Get the geofences used. Geofence data is hard coded in this sample.
-        populateGeofenceList();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        //COMPASS
-        textAngleToLocation = (TextView) findViewById(R.id.textAngleToLocation);
-        tvHeading = (TextView) findViewById(R.id.headingText);
-        direction = (TextView) findViewById(R.id.direction);
+        //SENSORS----------------------------------
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        mCompass = (ImageView) findViewById(R.id.compassImg);
 
         testLocation = new Location("");
         testLocation.setLatitude(55.702620);
@@ -139,7 +117,38 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         ourLocation = new Location("");
         ourLocation.setLatitude(0);
         ourLocation.setLongitude(0); //switch place on long and lat?
-        //END COMPASS
+
+        //GAME----------------------------------
+        game = new Game(ourLocation, Constants.GAME_RADIUS, Constants.GAME_CHECKPOINT_MINDISTANCE);
+        feedback = new Feedback(this);
+        //END GAME
+    }
+
+    public void initViews(){
+        mLatitudeTextView = (TextView) findViewById((R.id.latitude_textview));
+        mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
+        // Get the UI widgets.
+        mAddGeofencesButton = (Button) findViewById(R.id.add_geofences_button);
+        mRemoveGeofencesButton = (Button) findViewById(R.id.remove_geofences_button);
+        //COMPASS
+        textAngleToLocation = (TextView) findViewById(R.id.textAngleToLocation);
+        tvHeading = (TextView) findViewById(R.id.headingText);
+        direction = (TextView) findViewById(R.id.direction);
+        mCompass = (ImageView) findViewById(R.id.compassImg);
+    }
+
+    public void initGeofence(){
+        // Empty list for storing geofences.
+        mGeofenceList = new ArrayList<Geofence>();
+        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
+        mGeofencePendingIntent = null;
+        // Retrieve an instance of the SharedPreferences object.
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
+        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
+        setButtonsEnabledState();
+        // Get the geofences used. Geofence data is hard coded in this sample.
+        populateGeofenceList();
     }
 
     @Override
@@ -199,6 +208,10 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         ourLocation.setLatitude(location.getLatitude());
         ourLocation.setLongitude(location.getLongitude());
        //END COMPASS
+
+        //TEST!!!
+        feedback.mediaCheck( (System.currentTimeMillis()) - (game.getTimeStart()) ); //temporary solution for time-based sound feedback
+
         // Toast.makeText(this, "Updated: " + mLastUpdateTime, Toast.LENGTH_SHORT).show();
     }
 
@@ -229,17 +242,17 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             // permissions this app might request
         }
     }
-
-    public void startGame(){
-        //mGeofenceList.add(new Geofence.Builder()
-        Geofence fence = new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this geofence.
-                .setRequestId("hej")
-                .setCircularRegion(latitude, longitude, 150) //radius in meters
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build();//;
-    }
+//
+//    public void startGame(){
+//        //mGeofenceList.add(new Geofence.Builder()
+//        Geofence fence = new Geofence.Builder()
+//                // Set the request ID of the geofence. This is a string to identify this geofence.
+//                .setRequestId("hej")
+//                .setCircularRegion(latitude, longitude, 150) //radius in meters
+//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+//                .build();//;
+//    }
 
     /**
      * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
