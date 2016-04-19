@@ -26,6 +26,7 @@ public class Game {
         this.minDistance = minDistance;
         checkpointList = new ArrayList<Location>();
         timeStart = System.currentTimeMillis();
+        createCheckpoint();
     }
 
     /*
@@ -55,18 +56,11 @@ public class Game {
     /*
      * Returns true if within minimum distance of checkpoint, returns false otherwise
      */
-    public boolean checkIfClose(){
-        if((currentLocation.distanceTo(checkpointLocation))<minDistance){
+    public boolean checkIfClose(Location location){
+        if((location.distanceTo(checkpointLocation))<minDistance){
             return true;
         }
         return false;
-    }
-
-    public double getAngleTo(){
-        double distance = currentLocation.distanceTo(checkpointLocation);
-        double adjacent = checkpointLocation.getLatitude()-currentLocation.getLatitude();
-        double opposite = checkpointLocation.getLongitude()-currentLocation.getLongitude();
-        return Math.asin(opposite/distance);
     }
 
     public Location getCheckpointLocation(){

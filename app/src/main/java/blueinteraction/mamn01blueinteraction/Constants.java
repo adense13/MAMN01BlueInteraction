@@ -36,6 +36,7 @@ public final class Constants {
 
     public static final double GAME_RADIUS = 0.01; //1km approx
     public static final double GAME_CHECKPOINT_MINDISTANCE = 0.001; //110m approx
+    public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 100;
 
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
@@ -69,5 +70,8 @@ public final class Constants {
 
         //IKDC
         BAY_AREA_LANDMARKS.put("IKDC", new LatLng(55.715098, 13.212961));
+
+        //E HOUSE
+        BAY_AREA_LANDMARKS.put("E HOUSE", new LatLng(55.711040, 13.210316));
     }
 }

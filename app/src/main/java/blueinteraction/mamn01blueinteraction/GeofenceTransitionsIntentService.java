@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
@@ -27,6 +29,8 @@ import java.util.List;
  * as the output.
  */
 public class GeofenceTransitionsIntentService extends IntentService {
+
+    public ResultReceiver rec;
 
     protected static final String TAG = "GeofenceTransitionsIS";
 
@@ -51,7 +55,20 @@ public class GeofenceTransitionsIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        //TOBBZ
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        if(rec == null) {
+            rec = intent.getParcelableExtra("receiverTag");
+        }
+
+        if(rec!=null){
+            Bundle b= new Bundle();
+            b.putString("ServiceTag","funkar resultcallback?");  //Detta funkar typ inte när man kör det "på rätt ställe" vet ej vrf.
+            rec.send(0, b);
+        }
+        //END TOBBZ
+
+        //TOBBBE BORT GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
             String errorMessage = GeofenceErrorMessages.getErrorString(this,
                     geofencingEvent.getErrorCode());
@@ -70,11 +87,13 @@ public class GeofenceTransitionsIntentService extends IntentService {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
             // Get the transition details as a String.
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                    this,
-                    geofenceTransition,
-                    triggeringGeofences
-            );
+            String geofenceTransitionDetails = getGeofenceTransitionDetails(this, geofenceTransition, triggeringGeofences);
+
+            //if(rec!=null){
+             //   Bundle b= new Bundle();
+              //  b.putString("ServiceTag", geofenceTransitionDetails);  //Detta funkar typ inte när man kör det "på rätt ställe" vet ej vrf.
+              //  rec.send(0, b);
+            //}
 
             // Send notification and log the transition details.
             sendNotification(geofenceTransitionDetails);
