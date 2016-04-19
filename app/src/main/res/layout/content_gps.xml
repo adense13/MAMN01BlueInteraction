@@ -137,34 +137,7 @@
             android:layout_height="1dp"
             android:background="@color/colorDivider"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="add geofences"
-                android:id="@+id/add_geofences_button"
-                android:layout_below="@+id/longitude"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:onClick="addGeofencesButtonHandler" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="remove geofences"
-                android:id="@+id/remove_geofences_button"
-                android:layout_below="@+id/add_geofences_button"
-                android:layout_alignRight="@+id/add_geofences_button"
-                android:layout_alignEnd="@+id/add_geofences_button"
-                android:onClick="removeGeofencesButtonHandler"
-                android:layout_marginTop="10dp" />
-
-        </LinearLayout>
 
         <LinearLayout tools:context="blueinteraction.mamn01blueinteraction.CompassActivity"
             tools:showIn="@layout/activity_compass"
