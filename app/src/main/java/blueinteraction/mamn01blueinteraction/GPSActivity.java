@@ -61,7 +61,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     private float mPrevDegree = 0f;
 
     //TIME
-    private Long timeStart;
+    private Long timeStart, checkpointSpawnTime;
     boolean soundLvl1 = false;
     boolean soundLvl2 = false;
 
@@ -76,10 +76,11 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
 
     //GPS AND LOCATION
     public double latitude, longitude = 50;
-    Location checkpointLocation, ourLocation, startLocation;
+    Location checkpointLocation, checkpointSpawnPlayerLocation, ourLocation, startLocation;
 
     private String mLastUpdateTime;
 
+    //SHARED PREFERENCES
     protected static final String TAG = "MainActivity";
     SharedPreferences highscore;
     SharedPreferences.Editor editor;
@@ -188,6 +189,10 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         ourLocation.setLongitude(location.getLongitude());
         if(startLocation == null){
             startLocation = ourLocation;
+            checkpointSpawnPlayerLocation = ourLocation;
+            checkpointSpawnTime = System.currentTimeMillis();
+
+            //HARDCODED HIGHSCORE STUFF
             highscoreSet.add("123"+" "+"          20/4 16:00:04");
             highscoreSet.add("789"+" "+"          20/4 16:30:04");
             highscoreSet.add("1234"+" "+"          20/4 16:45:45");
@@ -195,7 +200,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             highscoreSet.add("456"+" "+"          20/4 17:14:12");
             editor.putStringSet("Highscore", highscoreSet);
             editor.commit();
-            checkpointLocation = createCheckpoint();
+            checkpointLocation = newCheckpoint();
 
         }
         latitude_check_textview.setText(String.valueOf(checkpointLocation.getLatitude()));
@@ -210,7 +215,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             mp = MediaPlayer.create(this, R.raw.alarm);
             mp.start();
             oldCheckpoints.add(checkpointLocation);
-            checkpointLocation = createCheckpoint();
+            checkpointLocation = newCheckpoint();
         }
 
         //SOUND
@@ -302,7 +307,18 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         return Double.toString(Math.round(nbr3 * 100.0) / 100.0);
     }
 
-    public Location createCheckpoint(){
+    /*
+     * Creates a new checkpoint and saves away the data of the old one
+     */
+    public Location newCheckpoint(){
+        //CALCULATE POINTS
+        if(checkpointLocation != null) {
+            calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime);
+        }
+        checkpointSpawnPlayerLocation = ourLocation;
+        checkpointSpawnTime = System.currentTimeMillis();
+        //END CALCULATE POINTS
+
         Random rand = new Random();
 
         //Calculate random distance and angle from game center

@@ -34,8 +34,8 @@ public final class Constants {
 
 
     //WE USE THIS
-    public static final double GAME_RADIUS = 0.01; //1km approx
-    public static final double GAME_CHECKPOINT_MINDISTANCE = 0.001; //110m approx
+    public static final double GAME_RADIUS = 0.005; //0.01; //1km approx
+    public static final double GAME_CHECKPOINT_MINDISTANCE = 0.00035; //0.001; //110m approx
     public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 100;
     public static final long SOUND_TIME_LVL_2 = 10000;
     public static final long SOUND_TIME_LVL_3 = 20000;
