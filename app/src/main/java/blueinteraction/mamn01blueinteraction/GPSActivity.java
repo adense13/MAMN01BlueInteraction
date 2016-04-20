@@ -13,6 +13,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -49,30 +50,42 @@ import java.util.Random;
 
 public class GPSActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,SensorEventListener {
 
-    //COMPASS
-    private SensorManager mSensorManager;
-    private Sensor mRotation;
-    private float mPrevDegree = 0f;
-    private TextView tvHeading, direction, textAngleToLocation, latitude_check_textview, longitude_check_textview;
+    //VIEWS
+    private TextView tvHeading, direction, textAngleToLocation, latitude_check_textview, longitude_check_textview, time_elasped;
     private ImageView mCompass;
-    private double minAngle = 10;
-    //END COMPASS
-
-    //GAME
-    Game game;
-    Feedback feedback;
-    Location checkpointLocation, ourLocation, startLocation;
-    ArrayList<Location> oldCheckpoints;
-    //END GAME
-
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-    private String mLastUpdateTime;
     private TextView mLatitudeTextView;
     private TextView mLongitudeTextView;
+
+    //SENSORS AND API
+    private SensorManager mSensorManager;
+    private Sensor mRotation;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
     private final int MY_PERMISSION_ACCESS_FINE_LOCATION = 1;
+
+    //COMPASS
+    private double minAngle = 10;
+    private float mPrevDegree = 0f;
+
+    //TIME
+    private Long timeStart;
+    boolean soundLvl1 = false;
+    boolean soundLvl2 = false;
+
+    //FEEDBACK
+    Feedback feedback;
+    MediaPlayer mp;
+
+    ArrayList<Location> oldCheckpoints;
+
+
     private boolean locationPermissionGoodToGo = false;
+
+    //GPS AND LOCATION
     public double latitude, longitude = 50;
+    Location checkpointLocation, ourLocation, startLocation;
+
+    private String mLastUpdateTime;
 
     protected static final String TAG = "MainActivity";
 
@@ -96,6 +109,8 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         //GAME----------------------------------
         oldCheckpoints = new ArrayList<Location>();
         feedback = new Feedback(this);
+        resetTimer(); //I think :P
+        mp = new MediaPlayer();
         //END GAME
 
     }
@@ -105,6 +120,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
         longitude_check_textview = (TextView) findViewById((R.id.longitude_check_textview));
         latitude_check_textview = (TextView) findViewById((R.id.latitude_check_textview));
+        time_elasped = (TextView) findViewById((R.id.time_elasped));
 
         //COMPASS
         textAngleToLocation = (TextView) findViewById(R.id.textAngleToLocation);
@@ -129,11 +145,13 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     protected void onResume() {
         super.onResume();
         mSensorManager.registerListener(this, mRotation, SensorManager.SENSOR_DELAY_UI);
+        //mp.start();
     }
 
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this, mRotation);
+        //mp.pause();
     }
 
     @Override
@@ -180,13 +198,16 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         if(distance < Constants.GAME_CHECKPOINT_MINDISTANCE_METERS){
             Toast.makeText(this, "Checkpoint reached", Toast.LENGTH_LONG).show();
             sendNotification("Checkpoint reached!");
+            mp.stop();
+            mp = MediaPlayer.create(this, R.raw.alarm);
+            mp.start();
             oldCheckpoints.add(checkpointLocation);
             checkpointLocation = createCheckpoint();
         }
 
-        //TEST!!!
-        //feedback.mediaCheck( (System.currentTimeMillis()) - (game.getTimeStart()) ); //temporary solution for time-based sound feedback
-
+        //SOUND
+        checkSoundEffects();
+        //END SOUND
     }
 
     @Override
@@ -292,7 +313,92 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         l.setLatitude(startLocation.getLatitude()+adjacent);
         l.setLongitude(startLocation.getLongitude()+opposite);
        // Toast.makeText(this, "Lat: "+l.getLatitude()+", Long: "+l.getLongitude(), Toast.LENGTH_LONG).show();//show checkpoint
+        resetTimer();
+        calculatePoints(400, timeStart);
         return l;
+    }
+
+    public int calculatePoints(double distance, long time){
+        return (int) (10*distance/Long.valueOf(time).doubleValue()); //Points = 10*distance/time in seconds
+    }
+
+    public void resetTimer(){
+        timeStart = System.currentTimeMillis();
+    }
+
+    public long getElapsedTime(){
+        long timeMillis = System.currentTimeMillis()-timeStart;
+        time_elasped.setText(Long.toString(timeMillis/1000)+" seconds");
+        return timeMillis;
+    }
+
+    public void mediaCheck(long timeElapsed) { //time comes from GPSActivity class, which in turn gets it from the Game-class. Kolla i "onLocationChanged"-metoden
+        //Toast.makeText(this, Long.toString(timeElapsed), Toast.LENGTH_SHORT).show();
+
+        if (timeElapsed < Constants.SOUND_TIME_LVL_2) {
+            //Toast.makeText(this, "SOUND TIME LVL 1", Toast.LENGTH_SHORT).show();
+            if(!soundLvl1) {
+                soundLvl1 = true;
+                soundLvl2 = false;
+//                mp.setLooping(false);
+//                mp.stop();
+//                mp = MediaPlayer.create(this, R.raw.shortpiano1);
+//                mp.setLooping(true);
+//                mp.start();
+            }
+        }
+        else if ((timeElapsed > Constants.SOUND_TIME_LVL_2)) {
+            playRandomSound();
+            if(!soundLvl2) {
+                soundLvl1 = false;
+                soundLvl2 = true;
+//                mp.setLooping(false);
+//                mp.stop();
+//                mp = MediaPlayer.create(this, R.raw.epicsong);
+//                mp.setLooping(true);
+//                mp.start();
+            }
+            //Toast.makeText(this, "SOUND TIME LVL 2", Toast.LENGTH_SHORT).show();
+        }
+//        else if (timeElapsed > 30000){
+//            soundLvl1 = false;
+//            soundLvl2 = false;
+//            timeStart = System.currentTimeMillis();
+//        }
+        //playRandomSound();
+    }
+
+    public void playRandomSound(){
+        double chance = (new Random()).nextDouble();
+        if(chance > 0.5){ //then play a random sound
+            int nbr = (new Random()).nextInt(5);
+            if(nbr == 0){
+                mp = MediaPlayer.create(this, R.raw.rage);
+                mp.start();
+            }
+            if(nbr == 1){
+                mp = MediaPlayer.create(this, R.raw.i_see_you_voice);
+                mp.start();
+            }
+            if(nbr == 2){
+                mp = MediaPlayer.create(this, R.raw.scream_horror1);
+                mp.start();
+            }
+            if(nbr == 3){
+                mp = MediaPlayer.create(this, R.raw.zombie_pain);
+                mp.start();
+            }
+            if(nbr == 4){
+                mp = MediaPlayer.create(this, R.raw.manhurt);
+                mp.start();
+            }
+
+        }
+    }
+
+    public void checkSoundEffects(){
+        //feedback.mediaCheck(getElapsedTime());
+        mediaCheck(getElapsedTime());
     }
 
     public String getDirection(int nbr){

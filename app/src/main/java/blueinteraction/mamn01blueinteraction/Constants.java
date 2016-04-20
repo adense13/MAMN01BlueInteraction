@@ -29,14 +29,23 @@ public final class Constants {
     }
 
     public static final String PACKAGE_NAME = "com.google.android.gms.location.Geofence";
-
     public static final String SHARED_PREFERENCES_NAME = PACKAGE_NAME + ".SHARED_PREFERENCES_NAME";
-
     public static final String GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY";
 
+
+    //WE USE THIS
     public static final double GAME_RADIUS = 0.01; //1km approx
     public static final double GAME_CHECKPOINT_MINDISTANCE = 0.001; //110m approx
     public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 100;
+    public static final long SOUND_TIME_LVL_2 = 10000;
+    public static final long SOUND_TIME_LVL_3 = 20000;
+    //END WE USE THIS
+
+
+
+
+
+
 
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
