@@ -71,4 +71,9 @@ public class MainActivity extends AppCompatActivity {
         //Feedback fb = new Feedback();
         //fb.mediaLoop();
     }
+
+    public void highScore(View view){
+        Intent intent = new Intent(this, HighScoreActivity.class);
+        startActivity(intent);
+    }
 }

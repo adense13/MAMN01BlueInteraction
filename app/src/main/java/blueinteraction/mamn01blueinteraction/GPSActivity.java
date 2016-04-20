@@ -15,7 +15,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -23,30 +22,24 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class GPSActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,SensorEventListener {
 
@@ -88,6 +81,9 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     private String mLastUpdateTime;
 
     protected static final String TAG = "MainActivity";
+    SharedPreferences highscore;
+    SharedPreferences.Editor editor;
+    Set<String> highscoreSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +108,11 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         resetTimer(); //I think :P
         mp = new MediaPlayer();
         //END GAME
+
+        //Highscore
+        highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
+        editor = highscore.edit();
+        highscoreSet = new HashSet<>();
 
     }
 
@@ -187,6 +188,13 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         ourLocation.setLongitude(location.getLongitude());
         if(startLocation == null){
             startLocation = ourLocation;
+            highscoreSet.add("123"+" "+"          20/4 16:00:04");
+            highscoreSet.add("789"+" "+"          20/4 16:30:04");
+            highscoreSet.add("1234"+" "+"          20/4 16:45:45");
+            highscoreSet.add("567"+" "+"          20/4 15:54:13");
+            highscoreSet.add("456"+" "+"          20/4 17:14:12");
+            editor.putStringSet("Highscore", highscoreSet);
+            editor.commit();
             checkpointLocation = createCheckpoint();
 
         }

@@ -42,6 +42,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
         </activity>
+        <activity
+            android:name=".HighScoreActivity"
+            android:label="@string/title_activity_high_score"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

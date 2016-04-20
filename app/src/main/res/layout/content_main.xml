@@ -58,6 +58,14 @@
             android:text="Feedback test"
             android:id="@+id/buttonFeedback"
             android:onClick="testFeedback" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Highscore"
+            android:id="@+id/buttonHighscore"
+            android:onClick="highScore" />
+
     </LinearLayout>
 
 </RelativeLayout>
