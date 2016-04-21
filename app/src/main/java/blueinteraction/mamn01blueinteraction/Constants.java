@@ -17,7 +17,7 @@ package blueinteraction.mamn01blueinteraction;
  */
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLng;
+
 import java.util.HashMap;
 
 /**
@@ -39,6 +39,8 @@ public final class Constants {
     public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 100;
     public static final long SOUND_TIME_LVL_2 = 10000;
     public static final long SOUND_TIME_LVL_3 = 20000;
+    public static final long[] VIBRATION_PATTERN = {0, Constants.VIBRATION_LENGTH, 2*Constants.VIBRATION_LENGTH}; //wait 0ms, vibrate 500ms, wait 1000ms, (insert a repeat of "0" into vibrate command to cause repeating vibrate)
+    public static final long VIBRATION_LENGTH = 500;
     //END WE USE THIS
 
 

@@ -68,6 +68,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     //FEEDBACK
     Feedback feedback;
     MediaPlayer mp;
+    boolean isVibrating = false;
 
     ArrayList<Location> oldCheckpoints;
 
@@ -214,7 +215,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             mp.stop();
             mp = MediaPlayer.create(this, R.raw.alarm);
             mp.start();
-            oldCheckpoints.add(checkpointLocation);
+            //oldCheckpoints.add(checkpointLocation); //This is done inside the newCheckpoint() method, just before returning the value and overwriting checkpointLocation
             checkpointLocation = newCheckpoint();
         }
 
@@ -275,9 +276,16 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
 
                 //CHECK ANGLE TO LOCATION
                 if ((angle < minAngle) || (angle > (360 - minAngle))) {
+                    if (!isVibrating) { //if it's not already vibrating
+                        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.cancel();
+                        v.vibrate(Constants.VIBRATION_PATTERN, 0);
+                        isVibrating = true;
+                    }
+                } else {
+                    isVibrating = false;
                     Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-                    // Vibrate for 500 milliseconds
-                    v.vibrate(500);
+                    v.cancel();
                 }
             }
 
@@ -287,7 +295,6 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             ra.setFillAfter(true);
             mCompass.startAnimation(ra);
             mPrevDegree = -azimuthInDegress;
-            //String location = lm.getLastKnownLocation();
         }
     }
 
@@ -336,7 +343,6 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         Location l = new Location("");
         l.setLatitude(startLocation.getLatitude()+adjacent);
         l.setLongitude(startLocation.getLongitude()+opposite);
-       // Toast.makeText(this, "Lat: "+l.getLatitude()+", Long: "+l.getLongitude(), Toast.LENGTH_LONG).show();//show checkpoint
         resetTimer();
         calculatePoints(400, timeStart);
         return l;
@@ -372,10 +378,11 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             }
         }
         else if ((timeElapsed > Constants.SOUND_TIME_LVL_2)) {
-            playRandomSound();
+            //playRandomSound(); //plays silly random noises.. but it was annoying so it's commented out :P
             if(!soundLvl2) {
                 soundLvl1 = false;
                 soundLvl2 = true;
+                //THE STUFF BELOW WAS BUGGY SO IT'S COMMENTED OUT FOR NOW
 //                mp.setLooping(false);
 //                mp.stop();
 //                mp = MediaPlayer.create(this, R.raw.epicsong);
