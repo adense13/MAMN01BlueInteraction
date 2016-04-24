@@ -8,4 +8,6 @@
     <color name="colorTextSecondary">#727272</color>
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#B6B6B6</color>
+    <color name="colorButtonPlay">#1dc136</color>
+    <color name="colorButtonPlayDark">#17972a</color>
 </resources>

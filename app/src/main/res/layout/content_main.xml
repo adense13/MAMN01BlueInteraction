@@ -66,6 +66,13 @@
             android:id="@+id/buttonHighscore"
             android:onClick="highScore" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adde Test Start Screen"
+            android:id="@+id/buttonAddeTest"
+            android:onClick="clickAdrianTest" />
+
     </LinearLayout>
 
 </RelativeLayout>

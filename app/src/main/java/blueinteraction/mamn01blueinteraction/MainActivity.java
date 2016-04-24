@@ -76,4 +76,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }
+
+    public void clickAdrianTest(View view){
+        Intent intent = new Intent(this, AdrianTest.class);
+        startActivity(intent);
+    }
 }

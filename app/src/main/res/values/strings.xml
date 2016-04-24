@@ -20,6 +20,7 @@
     <string name="geofence_transition_invalid_type">Invalid transition type</string>
     <string name="title_activity_compass">CompassActivity</string>
     <string name="title_activity_high_score">HighScoreActivity</string>
+    <string name="title_activity_adrian_test">AdrianTest</string>
 
 
 </resources>
