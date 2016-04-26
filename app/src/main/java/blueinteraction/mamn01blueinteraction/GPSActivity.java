@@ -111,6 +111,9 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mp = new MediaPlayer();
         //END GAME
 
+        //adde test with looping flag sound
+        //initCheckpointLoopSound();
+
         //Highscore
         highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
         editor = highscore.edit();
@@ -154,7 +157,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this, mRotation);
-        //mp.pause();
+        //mp.stop();
     }
 
     @Override
@@ -221,6 +224,10 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
 
         //SOUND
         checkSoundEffects();
+
+//        float volume = calculateVolumePercentage(ourLocation.distanceTo(checkpointLocation));
+//        mp.setVolume(volume, volume);
+//        Toast.makeText(this, "Vol: " + String.valueOf(volume), Toast.LENGTH_SHORT);
         //END SOUND
     }
 
@@ -399,6 +406,13 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         //playRandomSound();
     }
 
+    public void initCheckpointLoopSound(){
+        mp = MediaPlayer.create(this, R.raw.shortpiano1);
+        mp.setLooping(true);
+        mp.start();
+        mp.setVolume(0,0);
+    }
+
     public void playRandomSound(){
         double chance = (new Random()).nextDouble();
         if(chance > 0.5){ //then play a random sound
@@ -458,6 +472,27 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
             return ("Northwest");
         }
         return "";
+    }
+
+    public float calculateVolumePercentage(float dist){
+        float temp;
+        if(dist < 300){
+            temp = dist-Constants.GAME_CHECKPOINT_MINDISTANCE_METERS;
+            if(temp < 0){
+                return 1; //full volume
+            }
+            else{
+                float volume = 1-(temp/200);
+                if(volume < 0){
+                    return 0;
+                }
+                else{
+                    return volume;
+                }
+            }
+
+        }
+        return 0;
     }
 
     /**

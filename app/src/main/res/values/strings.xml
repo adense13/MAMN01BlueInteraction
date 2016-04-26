@@ -22,5 +22,10 @@
     <string name="title_activity_high_score">HighScoreActivity</string>
     <string name="title_activity_adrian_test">AdrianTest</string>
 
+    <string name="hint_enter_game_field_radius">Enter a game field radius in km</string>
+    <string name="button_play_game">Play Game</string>
+    <string name="button_highscore">Highscore</string>
+    <string name="button_help">Help</string>
+
 
 </resources>

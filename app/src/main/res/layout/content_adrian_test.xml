@@ -42,8 +42,9 @@
             android:ems="10"
             android:id="@+id/textGameRadius"
             android:layout_gravity="center_horizontal"
-            android:hint="Enter game radius in km"
-            android:textAlignment="center" />
+            android:hint="@string/hint_enter_game_field_radius"
+            android:textAlignment="center"
+            android:numeric="integer" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,24 +67,27 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Play Game"
+                android:text="@string/button_play_game"
                 android:id="@+id/buttonPlayGame"
                 android:layout_gravity="center_horizontal"
-                style="@drawable/button_custom_play" />
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:onClick="clickToGPS"
+                android:enabled="false" />
 
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Highscore"
+                android:text="@string/button_highscore"
                 android:id="@+id/buttonHighscore"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:onClick="highScore" />
 
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Help"
+                android:text="@string/button_help"
                 android:id="@+id/buttonHelp"
                 android:layout_gravity="center_horizontal" />
 
