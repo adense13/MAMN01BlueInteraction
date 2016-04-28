@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item android:drawable="@drawable/howto1" android:duration="200" />
+    <item android:drawable="@drawable/howto2" android:duration="200" />
+    <item android:drawable="@drawable/howto3" android:duration="200" />
+    <item android:drawable="@drawable/howto4" android:duration="200" />
+    <item android:drawable="@drawable/howto5" android:duration="200" />
+    <item android:drawable="@drawable/howto6" android:duration="200" />
+    <item android:drawable="@drawable/howto7" android:duration="200" />
+    <item android:drawable="@drawable/howto8" android:duration="200" />
+    <item android:drawable="@drawable/howto9" android:duration="200" />
+    <item android:drawable="@drawable/howto10" android:duration="200" />
+    <item android:drawable="@drawable/howto11" android:duration="200" />
+    <item android:drawable="@drawable/howto12" android:duration="200" />
+
+</animation-list>

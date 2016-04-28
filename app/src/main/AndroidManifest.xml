@@ -69,6 +69,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
         </activity>
+        <activity
+            android:name=".HowToPlayActivity"
+            android:label="@string/title_activity_how_to_play"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

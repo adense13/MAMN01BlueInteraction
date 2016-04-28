@@ -21,12 +21,18 @@
     <string name="title_activity_compass">CompassActivity</string>
     <string name="title_activity_high_score">HighScoreActivity</string>
     <string name="title_activity_adrian_test">AdrianTest</string>
+    <string name="title_activity_timer">Timer</string>
+    <string name="title_activity_how_to_play">How to play</string>
+
 
     <string name="hint_enter_game_field_radius">Enter a game field radius in km</string>
     <string name="button_play_game">Play Game</string>
     <string name="button_highscore">Highscore</string>
     <string name="button_help">Help</string>
-    <string name="title_activity_timer">TimerActivity</string>
+    <string name="button_how_to_play">How to play</string>
+    <string name="how_to_play">Rotate the device horizontally until you feel a vibration.
+    then move the yourself in that direction until you hear a sound, that means you
+    have reached a checkpoint</string>
 
 
 </resources>

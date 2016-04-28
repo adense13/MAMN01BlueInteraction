@@ -82,8 +82,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void howToPlay(View view){
+        Intent intent = new Intent(this, HowToPlayActivity.class);
+        startActivity(intent);
+    }
+
     public void startTimer(View view){
         Intent intent = new Intent(this, TimerActivity.class);
         startActivity(intent);
     }
+
+
 }
