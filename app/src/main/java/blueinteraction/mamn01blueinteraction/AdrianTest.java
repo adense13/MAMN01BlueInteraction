@@ -28,31 +28,31 @@ public class AdrianTest extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         buttonPlay = (Button) findViewById(R.id.buttonPlayGame);
-        buttonPlay.setTextColor(Color.BLACK);
-        radius = (EditText) findViewById((R.id.textGameRadius));
-        radius.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() != 0){
-                    buttonPlay.setEnabled(true);
-                    buttonPlay.setTextColor(Color.WHITE);
-                    //Field2.setText("");
-                }
-                else{
-                    buttonPlay.setEnabled(false);
-                    buttonPlay.setTextColor(Color.BLACK);
-                }
-            }
-        });
+//        buttonPlay.setTextColor(Color.BLACK);
+//        radius = (EditText) findViewById((R.id.textGameRadius));
+//        radius.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if(s.length() != 0){
+//                    buttonPlay.setEnabled(true);
+//                    buttonPlay.setTextColor(Color.WHITE);
+//                    //Field2.setText("");
+//                }
+//                else{
+//                    buttonPlay.setEnabled(false);
+//                    buttonPlay.setTextColor(Color.BLACK);
+//                }
+//            }
+//        });
     }
 
     public void clickToGPS(View view){
-        Intent intent = new Intent(this, GPSActivity.class);
+        Intent intent = new Intent(this, PlaySetupActivity.class);
         startActivity(intent);
     }
 

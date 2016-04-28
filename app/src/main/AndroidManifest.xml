@@ -78,6 +78,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="blueinteraction.mamn01blueinteraction.MainActivity" />
         </activity>
+        <activity
+            android:name=".PlaySetupActivity"
+            android:label="@string/title_activity_play_setup"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

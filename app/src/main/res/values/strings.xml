@@ -33,6 +33,7 @@
     <string name="how_to_play">Rotate the device horizontally until you feel a vibration.
     then move the yourself in that direction until you hear a sound, that means you
     have reached a checkpoint</string>
+    <string name="title_activity_play_setup">PlaySetupActivity</string>
 
 
 </resources>

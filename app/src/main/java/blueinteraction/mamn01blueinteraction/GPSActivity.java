@@ -60,6 +60,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     //COMPASS
     private double minAngle = 10;
     private float mPrevDegree = 0f;
+    Vibrator v;
 
     //TIME
     private Long timeStart, checkpointSpawnTime;
@@ -70,6 +71,9 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     Feedback feedback;
     MediaPlayer mp;
     boolean isVibrating = false;
+
+    //GAME VARIABLES
+    private int game_time, game_radius;
 
     ArrayList<Location> oldCheckpoints;
 
@@ -96,7 +100,13 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         setContentView(R.layout.activity_gps);
         initViews();
 
-        //GPS----------------------------------
+        //GET PUT EXTRAS--------------------------
+        Intent intent = getIntent();
+        game_time = intent.getIntExtra("time", 20); //fetch the game_time extra
+        //Toast.makeText(this, Integer.toString(game_time), Toast.LENGTH_LONG);
+        game_radius = intent.getIntExtra("radius", 2); //Fetch the game_radius extra
+
+        //GPS------------------------------------
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
 
         //SENSORS----------------------------------
@@ -114,9 +124,6 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mp = new MediaPlayer();
         //END GAME
 
-        //adde test with looping flag sound
-        //initCheckpointLoopSound();
-
         //Highscore
         highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
         editor = highscore.edit();
@@ -124,7 +131,8 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
 
         //Timer
         time_elasped = (TextView) findViewById(R.id.time_elasped);
-        timer = new CountDownTimer(30000,1000){
+        //timer = new CountDownTimer(game_time *60*1000,1000){
+            timer = new CountDownTimer(30000,1000){
             public void onTick(long millisUntilFinished){
                 time_elasped.setText("seconds remaining: "+ millisUntilFinished /1000);
             }
@@ -171,6 +179,9 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this, mRotation);
+        if(v != null) {
+            v.cancel();
+        }
         //mp.stop();
     }
 
@@ -298,14 +309,14 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
                 //CHECK ANGLE TO LOCATION
                 if ((angle < minAngle) || (angle > (360 - minAngle))) {
                     if (!isVibrating) { //if it's not already vibrating
-                        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+                        v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
                         v.cancel();
                         v.vibrate(Constants.VIBRATION_PATTERN, 0);
                         isVibrating = true;
                     }
                 } else {
                     isVibrating = false;
-                    Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+                    v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
                     v.cancel();
                 }
             }
@@ -339,38 +350,43 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
      * Creates a new checkpoint and saves away the data of the old one
      */
     public Location newCheckpoint(){
-        //CALCULATE POINTS
         if(checkpointLocation != null) {
-            calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime);
+            calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime); //calculate points for taking prev checkpoint (if it exists)
+            //TODO: ^actually add that to the database?
         }
-        checkpointSpawnPlayerLocation = ourLocation;
-        checkpointSpawnTime = System.currentTimeMillis();
-        //END CALCULATE POINTS
+        checkpointSpawnPlayerLocation = ourLocation; //where we are when the checkpoint spawns
+        checkpointSpawnTime = System.currentTimeMillis(); //what game_time it is when the checkpoint spawns
 
         Random rand = new Random();
+        Location l = new Location("");
 
-        //Calculate random distance and angle from game center
-        double distance = Constants.GAME_RADIUS * rand.nextDouble();
-        double angleDeg = 360 * rand.nextDouble();
+        while(true) { //loop for infinity, will break it from within if new checkpoint is okay
+            //Calculate random distance and angle from game center
+            double distance = Constants.GAME_RADIUS * rand.nextDouble(); //random game_radius from start location
+            double angleDeg = 360 * rand.nextDouble(); //random angle from start location
+            //Trig, calculating long and lat distances from game center
+            double opposite = Math.sin(angleDeg) * distance;
+            double adjacent = Math.cos(angleDeg) * distance;
+            //Calculating absolute position of checkpoint and setting it
+            l.setLatitude(startLocation.getLatitude() + adjacent);
+            l.setLongitude(startLocation.getLongitude() + opposite);
 
-        //Trig, calculating long and lat distances from game center
-        double opposite = Math.sin(angleDeg)*distance;
-        double adjacent = Math.cos(angleDeg)*distance;
+            //if checkpoints spawn within permitted distance from currentLocation AND they don't spawn inside us, we break the loop. Otherwise, keep spinnin
+            if((l.distanceTo(ourLocation) <= Constants.GAME_CHECKPOINT_MAX_SPAWN_DISTANCE) && (l.distanceTo(ourLocation) > Constants.GAME_CHECKPOINT_MINDISTANCE_METERS)){
+                break;//we are satisfied with distance between new checkpoint and current player location
+            }
+        }
 
-        //Calculating absolute position of checkpoint and setting it
-        if(checkpointLocation != null) {
+        resetTimer(); // sets game_time of checkpoint spawn to current game_time
+        //calculatePoints(400, timeStart);
+        if(checkpointLocation != null) { //TODO: should we even have this?
             oldCheckpoints.add(checkpointLocation);
         }
-        Location l = new Location("");
-        l.setLatitude(startLocation.getLatitude()+adjacent);
-        l.setLongitude(startLocation.getLongitude()+opposite);
-        resetTimer();
-        calculatePoints(400, timeStart);
         return l;
     }
 
     public int calculatePoints(double distance, long time){
-        return (int) (10*distance/Long.valueOf(time).doubleValue()); //Points = 10*distance/time in seconds
+        return (int) (10*distance/Long.valueOf(time).doubleValue()); //Points = 10*distance/game_time in seconds
     }
 
     public void resetTimer(){
@@ -383,7 +399,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         return timeMillis;
     }
 
-    public void mediaCheck(long timeElapsed) { //time comes from GPSActivity class, which in turn gets it from the Game-class. Kolla i "onLocationChanged"-metoden
+    public void mediaCheck(long timeElapsed) { //game_time comes from GPSActivity class, which in turn gets it from the Game-class. Kolla i "onLocationChanged"-metoden
         //Toast.makeText(this, Long.toString(timeElapsed), Toast.LENGTH_SHORT).show();
 
         if (timeElapsed < Constants.SOUND_TIME_LVL_2) {
@@ -427,33 +443,33 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mp.setVolume(0,0);
     }
 
-    public void playRandomSound(){
-        double chance = (new Random()).nextDouble();
-        if(chance > 0.5){ //then play a random sound
-            int nbr = (new Random()).nextInt(5);
-            if(nbr == 0){
-                mp = MediaPlayer.create(this, R.raw.rage);
-                mp.start();
-            }
-            if(nbr == 1){
-                mp = MediaPlayer.create(this, R.raw.i_see_you_voice);
-                mp.start();
-            }
-            if(nbr == 2){
-                mp = MediaPlayer.create(this, R.raw.scream_horror1);
-                mp.start();
-            }
-            if(nbr == 3){
-                mp = MediaPlayer.create(this, R.raw.zombie_pain);
-                mp.start();
-            }
-            if(nbr == 4){
-                mp = MediaPlayer.create(this, R.raw.manhurt);
-                mp.start();
-            }
-
-        }
-    }
+//    public void playRandomSound(){
+//        double chance = (new Random()).nextDouble();
+//        if(chance > 0.5){ //then play a random sound
+//            int nbr = (new Random()).nextInt(5);
+//            if(nbr == 0){
+//                mp = MediaPlayer.create(this, R.raw.rage);
+//                mp.start();
+//            }
+//            if(nbr == 1){
+//                mp = MediaPlayer.create(this, R.raw.i_see_you_voice);
+//                mp.start();
+//            }
+//            if(nbr == 2){
+//                mp = MediaPlayer.create(this, R.raw.scream_horror1);
+//                mp.start();
+//            }
+//            if(nbr == 3){
+//                mp = MediaPlayer.create(this, R.raw.zombie_pain);
+//                mp.start();
+//            }
+//            if(nbr == 4){
+//                mp = MediaPlayer.create(this, R.raw.manhurt);
+//                mp.start();
+//            }
+//
+//        }
+//    }
 
     public void checkSoundEffects(){
         //feedback.mediaCheck(getElapsedTime());

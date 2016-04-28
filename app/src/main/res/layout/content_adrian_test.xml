@@ -31,25 +31,6 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/textGameRadius"
-            android:layout_gravity="center_horizontal"
-            android:hint="@string/hint_enter_game_field_radius"
-            android:textAlignment="center"
-            android:numeric="integer" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -72,7 +53,7 @@
                 android:layout_gravity="center_horizontal"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:onClick="clickToGPS"
-                android:enabled="false" />
+                android:enabled="true" />
 
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
