@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -87,6 +88,8 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
     SharedPreferences.Editor editor;
     Set<String> highscoreSet;
 
+    private CountDownTimer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,17 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         editor = highscore.edit();
         highscoreSet = new HashSet<>();
 
+        //Timer
+        time_elasped = (TextView) findViewById(R.id.time_elasped);
+        timer = new CountDownTimer(30000,1000){
+            public void onTick(long millisUntilFinished){
+                time_elasped.setText("seconds remaining: "+ millisUntilFinished /1000);
+            }
+            public void onFinish(){
+                time_elasped.setText("Done!");
+            }
+        }.start();
+
     }
 
     public void initViews(){
@@ -126,7 +140,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
         mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
         longitude_check_textview = (TextView) findViewById((R.id.longitude_check_textview));
         latitude_check_textview = (TextView) findViewById((R.id.latitude_check_textview));
-        time_elasped = (TextView) findViewById((R.id.time_elasped));
+        //time_elasped = (TextView) findViewById((R.id.time_elasped));
 
         //COMPASS
         textAngleToLocation = (TextView) findViewById(R.id.textAngleToLocation);
@@ -365,7 +379,7 @@ public class GPSActivity extends AppCompatActivity implements GoogleApiClient.Co
 
     public long getElapsedTime(){
         long timeMillis = System.currentTimeMillis()-timeStart;
-        time_elasped.setText(Long.toString(timeMillis/1000)+" seconds");
+       // time_elasped.setText(Long.toString(timeMillis/1000)+" seconds");
         return timeMillis;
     }
 

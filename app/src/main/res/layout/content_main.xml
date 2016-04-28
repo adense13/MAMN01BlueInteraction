@@ -73,6 +73,13 @@
             android:id="@+id/buttonAddeTest"
             android:onClick="clickAdrianTest" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Timer"
+            android:id="@+id/TimerButton"
+            android:onClick="startTimer" />
+
     </LinearLayout>
 
 </RelativeLayout>

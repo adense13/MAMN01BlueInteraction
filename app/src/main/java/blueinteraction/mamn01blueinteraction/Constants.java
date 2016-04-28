@@ -71,7 +71,7 @@ public final class Constants {
         BAY_AREA_LANDMARKS.put("KH", new LatLng(55.7124056, 13.2090622));
 
         // Googleplex.
-        BAY_AREA_LANDMARKS.put("KH2", new LatLng(55.7124056, 13.2090622));
+        BAY_AREA_LANDMARKS.put("MA", new LatLng(55.711246, 13.207704));
 
         //Vildanden
         BAY_AREA_LANDMARKS.put("Vildis", new LatLng(55.710694, 13.169511));

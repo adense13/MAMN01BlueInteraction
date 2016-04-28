@@ -26,6 +26,7 @@
     <string name="button_play_game">Play Game</string>
     <string name="button_highscore">Highscore</string>
     <string name="button_help">Help</string>
+    <string name="title_activity_timer">TimerActivity</string>
 
 
 </resources>

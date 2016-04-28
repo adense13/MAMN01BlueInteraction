@@ -81,4 +81,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AdrianTest.class);
         startActivity(intent);
     }
+
+    public void startTimer(View view){
+        Intent intent = new Intent(this, TimerActivity.class);
+        startActivity(intent);
+    }
 }
