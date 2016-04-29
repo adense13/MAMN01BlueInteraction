@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class HighScoreActivity extends AppCompatActivity {
@@ -29,20 +30,27 @@ public class HighScoreActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         SharedPreferences highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
-        Set<String> score = highscore.getStringSet("Highscore", null);
+        Map<String,?> test = highscore.getAll();
+        Set<String> keys = test.keySet();
         ArrayList<String> scoreList = new ArrayList<>();
+        ArrayList<String> keyList = new ArrayList<>();
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, scoreList);
         ListView listView = (ListView)findViewById(R.id.listview);
 
-        if(score!=null){
-            Iterator iterator = score.iterator();
-            String value;
+        if(keys!=null){
+            Iterator iterator = keys.iterator();
+            String key;
+
             while(iterator.hasNext()){
-                value = (String)iterator.next();
-                scoreList.add(value);
+                key = (String)iterator.next();
+                keyList.add(key);
             }
+        }
+        String value;
+        for(int i=0; i<keyList.size(); i++){
+            value = highscore.getString(keyList.get(i),"");
+            scoreList.add(value);
         }
 
         Collections.sort(scoreList, new Comparator<String>() {
@@ -57,9 +65,7 @@ public class HighScoreActivity extends AppCompatActivity {
                 return 0;
             }
         });
-
         listView.setAdapter(adapter);
-
     }
 
 }

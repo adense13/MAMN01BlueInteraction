@@ -147,7 +147,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         //Highscore
         highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
         editor = highscore.edit();
-        highscoreSet = new HashSet<>();
+       // highscoreSet = new HashSet<>();
         score =0;
 
         //Timer
@@ -160,8 +160,8 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
             public void onFinish() {
                 time_elasped.setText("Score: " + score);
-                highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
-                editor.putStringSet("Highscore", highscoreSet);
+               // highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
+                editor.putString("test", Integer.toString(score)+"          Tobias");
                 editor.commit();
                 highScore();
             }
@@ -211,6 +211,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this, mRotation);
+        timer.cancel();
         if (v != null) {
             v.cancel();
         }
@@ -256,12 +257,10 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             checkpointSpawnTime = System.currentTimeMillis();
 
             //HARDCODED HIGHSCORE STUFF
-            highscoreSet.add("123" + " " + "          20/4 16:00:04");
-            highscoreSet.add("789" + " " + "          20/4 16:30:04");
-            highscoreSet.add("1234" + " " + "          20/4 16:45:45");
-            highscoreSet.add("567" + " " + "          20/4 15:54:13");
-            highscoreSet.add("456" + " " + "          20/4 17:14:12");
-            editor.putStringSet("Highscore", highscoreSet);
+
+            editor.putString("Highscore", "123          Tobias");
+            editor.putString("Hej", "153          Tobias");
+            editor.putString("Otto", "323          Tobias");
             editor.commit();
             checkpointLocation = newCheckpoint();
 
