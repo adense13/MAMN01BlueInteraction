@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlaySetupActivity extends AppCompatActivity {
 
@@ -48,8 +49,8 @@ public class PlaySetupActivity extends AppCompatActivity {
 
         if((time.length() != 0) && (radius.length() != 0)){ //Then we are good to go
             Intent intent = new Intent(this, GPSActivity.class);
-            intent.putExtra("time", Integer.getInteger(time.getText().toString())); //send time to GPS activity
-            intent.putExtra("radius", Integer.getInteger(radius.getText().toString())); //send radius to GPS activity
+            intent.putExtra("time", Integer.parseInt((time.getText()).toString())); //send time to GPS activity
+            intent.putExtra("radius", Integer.parseInt((radius.getText()).toString())); //send radius to GPS activity
             startActivity(intent);
         }
     }

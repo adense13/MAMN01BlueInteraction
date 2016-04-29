@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -82,7 +83,8 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     boolean isVibrating = false;
 
     //GAME VARIABLES
-    private int game_time, game_radius;
+    private int game_time;
+    private int game_radius;
 
     ArrayList<Location> oldCheckpoints;
 
@@ -120,7 +122,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         //GET PUT EXTRAS--------------------------
         Intent intent = getIntent();
         game_time = intent.getIntExtra("time", 20); //fetch the game_time extra
-        //Toast.makeText(this, Integer.toString(game_time), Toast.LENGTH_LONG);
         game_radius = intent.getIntExtra("radius", 2); //Fetch the game_radius extra
 
         //GPS------------------------------------
@@ -148,10 +149,10 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //Timer
         time_elasped = (TextView) findViewById(R.id.time_elasped);
-        //timer = new CountDownTimer(game_time *60*1000,1000){
-        timer = new CountDownTimer(30000, 1000) {
+        timer = new CountDownTimer(game_time *60*1000,1000){
+        //timer = new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
-                time_elasped.setText("seconds remaining: " + millisUntilFinished / 1000);
+                time_elasped.setText("" + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
@@ -236,6 +237,9 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         ourLocation.setLongitude(location.getLongitude());
         if (startLocation == null) {
             startLocation = ourLocation;
+            LatLng startLatLng = new LatLng(startLocation.getLatitude(), startLocation.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng,17.0f));
+            mMap.addCircle((new CircleOptions()).center(startLatLng).radius(game_radius*1000));
             checkpointSpawnPlayerLocation = ourLocation;
             checkpointSpawnTime = System.currentTimeMillis();
 
@@ -370,6 +374,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     public Location newCheckpoint() {
         if (checkpointLocation != null) {
             calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime); //calculate points for taking prev checkpoint (if it exists)
+            mMap.addMarker(new MarkerOptions().position(new LatLng(checkpointLocation.getLatitude(), checkpointLocation.getLongitude())).title((Integer.toString(oldCheckpoints.size()+1))));
             //TODO: ^actually add that to the database?
         }
         checkpointSpawnPlayerLocation = ourLocation; //where we are when the checkpoint spawns
@@ -380,7 +385,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
         while (true) { //loop for infinity, will break it from within if new checkpoint is okay
             //Calculate random distance and angle from game center
-            double distance = Constants.GAME_RADIUS * rand.nextDouble(); //random game_radius from start location
+            double distance = (game_radius * 0.008983) * rand.nextDouble(); //random game_radius from start location. PRev: Constants.GAME_RADIUS
             double angleDeg = 360 * rand.nextDouble(); //random angle from start location
             //Trig, calculating long and lat distances from game center
             double opposite = Math.sin(angleDeg) * distance;
@@ -400,6 +405,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         if (checkpointLocation != null) { //TODO: should we even have this?
             oldCheckpoints.add(checkpointLocation);
         }
+
         return l;
     }
 
