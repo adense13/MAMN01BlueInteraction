@@ -34,6 +34,7 @@
     then move the yourself in that direction until you hear a sound, that means you
     have reached a checkpoint</string>
     <string name="title_activity_play_setup">PlaySetupActivity</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

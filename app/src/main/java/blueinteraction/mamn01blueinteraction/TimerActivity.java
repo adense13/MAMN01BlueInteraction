@@ -1,5 +1,6 @@
 package blueinteraction.mamn01blueinteraction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -27,8 +28,14 @@ public class TimerActivity extends AppCompatActivity {
             }
             public void onFinish(){
                 mTextField.setText("Done!");
+                highScore();
             }
         }.start();
+    }
+
+    public void highScore(){
+        Intent intent = new Intent(this, HighScoreActivity.class);
+        startActivity(intent);
     }
 
 }
