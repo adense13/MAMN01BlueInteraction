@@ -24,6 +24,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -104,6 +105,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     Set<String> highscoreSet;
 
     private CountDownTimer timer;
+    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
         editor = highscore.edit();
         highscoreSet = new HashSet<>();
+        score =0;
 
         //Timer
         time_elasped = (TextView) findViewById(R.id.time_elasped);
@@ -156,10 +159,19 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             }
 
             public void onFinish() {
-                time_elasped.setText("Done!");
+                time_elasped.setText("Score: " + score);
+                highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
+                editor.putStringSet("Highscore", highscoreSet);
+                editor.commit();
+                highScore();
             }
         }.start();
 
+    }
+
+    public void highScore(){
+        Intent intent = new Intent(this, HighScoreActivity.class);
+        startActivity(intent);
     }
 
     public void initViews() {
@@ -232,7 +244,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         //ourLocation = location;
-
+        //score += 1;
         ourLocation.setLatitude(location.getLatitude());
         ourLocation.setLongitude(location.getLongitude());
         if (startLocation == null) {
@@ -373,7 +385,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
      */
     public Location newCheckpoint() {
         if (checkpointLocation != null) {
-            calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime); //calculate points for taking prev checkpoint (if it exists)
+            score += calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime); //calculate points for taking prev checkpoint (if it exists)
             mMap.addMarker(new MarkerOptions().position(new LatLng(checkpointLocation.getLatitude(), checkpointLocation.getLongitude())).title((Integer.toString(oldCheckpoints.size()+1))));
             //TODO: ^actually add that to the database?
         }
