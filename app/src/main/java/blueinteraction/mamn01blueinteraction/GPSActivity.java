@@ -421,7 +421,8 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public int calculatePoints(double distance, long time) {
-        return (int) (10 * distance / Long.valueOf(time).doubleValue()); //Points = 10*distance/game_time in seconds
+        Double d = new Double((10 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
+        return d.intValue(); //we need to send it as an integer
     }
 
     public void resetTimer() {
