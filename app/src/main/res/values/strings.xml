@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">MAMN01BlueInteraction</string>
+    <string name="app_name">Checkpoint</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_gps">GPSActivity</string>
+    <string name="title_activity_gps"></string>
     <string name="exiting_geofence">Exiting geofence</string>
     <string name="entering_geofence">Entering geofence</string>
 
@@ -19,7 +19,7 @@
     <string name="unknown_geofence_transition">Unkown transition</string>
     <string name="geofence_transition_invalid_type">Invalid transition type</string>
     <string name="title_activity_compass">CompassActivity</string>
-    <string name="title_activity_high_score">HighScoreActivity</string>
+    <string name="title_activity_high_score">Highscore</string>
     <string name="title_activity_adrian_test">AdrianTest</string>
     <string name="title_activity_timer">Timer</string>
     <string name="title_activity_how_to_play">How to play</string>
@@ -33,7 +33,7 @@
     <string name="how_to_play">Rotate the device horizontally until you feel a vibration.
     then move the yourself in that direction until you hear a sound, that means you
     have reached a checkpoint</string>
-    <string name="title_activity_play_setup">PlaySetupActivity</string>
+    <string name="title_activity_play_setup">Set up your game</string>
     <string name="title_activity_maps">Map</string>
 
 

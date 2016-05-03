@@ -27,7 +27,6 @@ public class HighScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_high_score);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);

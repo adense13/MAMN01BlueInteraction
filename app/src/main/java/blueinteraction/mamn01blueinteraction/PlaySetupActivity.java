@@ -48,6 +48,7 @@ public class PlaySetupActivity extends AppCompatActivity {
         }
 
         if((time.length() != 0) && (radius.length() != 0)){ //Then we are good to go
+            finish();
             Intent intent = new Intent(this, GPSActivity.class);
             intent.putExtra("time", Integer.parseInt((time.getText()).toString())); //send time to GPS activity
             intent.putExtra("radius", Integer.parseInt((radius.getText()).toString())); //send radius to GPS activity

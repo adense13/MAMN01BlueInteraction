@@ -1,9 +1,11 @@
 package blueinteraction.mamn01blueinteraction;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -112,6 +115,9 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //MAPS-----------------------------------------------------------------------------------
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -164,6 +170,10 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
             public void onFinish() {
                 time_elasped.setText("Score: " + score);
+                int scoreLength = String.valueOf(score).length();
+                String space = "          ";
+                space = space.substring(0, space.length()-scoreLength);
+
                // highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Date date = new Date();
@@ -176,6 +186,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void highScore(){
+        finish();
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }
@@ -271,17 +282,15 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
         Float distance = ourLocation.distanceTo(checkpointLocation);
         if (distance < Constants.GAME_CHECKPOINT_MINDISTANCE_METERS) {
-            Toast.makeText(this, "Checkpoint reached", Toast.LENGTH_LONG).show();
-            sendNotification("Checkpoint reached!");
             mp.stop();
-            mp = MediaPlayer.create(this, R.raw.alarm);
+            mp = MediaPlayer.create(this, R.raw.checkpointsuccess);
             mp.start();
             //oldCheckpoints.add(checkpointLocation); //This is done inside the newCheckpoint() method, just before returning the value and overwriting checkpointLocation
             checkpointLocation = newCheckpoint();
         }
 
         //SOUND
-        checkSoundEffects();
+        //checkSoundEffects();
 
 //        float volume = calculateVolumePercentage(ourLocation.distanceTo(checkpointLocation));
 //        mp.setVolume(volume, volume);
@@ -349,7 +358,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
 
                         //Toast.makeText(this, "Checkpoint reached", Toast.LENGTH_LONG).show();
                         mp.stop();
-                        mp = MediaPlayer.create(this, R.raw.alarm);
+                        mp = MediaPlayer.create(this, R.raw.checkpointsuccess);
                         mp.start();
                         checkpointLocation = newCheckpoint();
                     }
@@ -392,7 +401,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         if (checkpointLocation != null) {
             score += calculatePoints(checkpointSpawnPlayerLocation.distanceTo(checkpointLocation), System.currentTimeMillis() - checkpointSpawnTime); //calculate points for taking prev checkpoint (if it exists)
             mMap.addMarker(new MarkerOptions().position(new LatLng(checkpointLocation.getLatitude(), checkpointLocation.getLongitude())).title((Integer.toString(oldCheckpoints.size()+1))));
-            //TODO: ^actually add that to the database?
         }
         checkpointSpawnPlayerLocation = ourLocation; //where we are when the checkpoint spawns
         checkpointSpawnTime = System.currentTimeMillis(); //what game_time it is when the checkpoint spawns
@@ -429,7 +437,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     public int calculatePoints(double distance, long time) {
         Double d = new Double((1000 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
         int p = d.intValue(); //we need to send it as an integer
-        Toast.makeText(this, "+"+ String.valueOf(p) + " points", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Checkpoint reached! " + "\n" + "+"+ String.valueOf(p) + " points", Toast.LENGTH_LONG).show();
         return p;
     }
 
@@ -625,5 +633,23 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         //mMap.addMarker(new MarkerOptions().position(lund).title("Marker in Lund"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(gameStartLc,17.0f));
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Ending game session")
+                .setMessage("Are you sure you want to end the game and forfeit your score?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

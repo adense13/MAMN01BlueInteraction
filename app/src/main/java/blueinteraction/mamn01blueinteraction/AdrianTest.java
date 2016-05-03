@@ -56,7 +56,7 @@ public class AdrianTest extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void highScore(View view){
+    public void highScoreWu(View view){
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }

@@ -16,6 +16,7 @@ public class HowToPlayActivity extends AppCompatActivity{
         setContentView(R.layout.activity_how_to_play);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final ImageView animImageView = (ImageView) findViewById(R.id.ivAnimation);
         animImageView.setBackgroundResource(R.drawable.anim);
