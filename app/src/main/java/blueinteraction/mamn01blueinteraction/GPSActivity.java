@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -150,6 +151,9 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
        // highscoreSet = new HashSet<>();
         score =0;
 
+        //Double d = new Double(5.2); //Points = 10*distance/game_time in seconds
+        //score = score + d.intValue(); //we need to send it as an integer
+
         //Timer
         time_elasped = (TextView) findViewById(R.id.time_elasped);
         timer = new CountDownTimer(game_time *60*1000,1000){
@@ -161,12 +165,14 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onFinish() {
                 time_elasped.setText("Score: " + score);
                // highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
-                editor.putString("test", Integer.toString(score)+"          Tobias");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date date = new Date();
+                String s = sdf.format(date);
+                editor.putString(s, Integer.toString(score)+"          "+s);
                 editor.commit();
                 highScore();
             }
         }.start();
-
     }
 
     public void highScore(){
@@ -256,12 +262,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             checkpointSpawnPlayerLocation = ourLocation;
             checkpointSpawnTime = System.currentTimeMillis();
 
-            //HARDCODED HIGHSCORE STUFF
-
-            editor.putString("Highscore", "123          Tobias");
-            editor.putString("Hej", "153          Tobias");
-            editor.putString("Otto", "323          Tobias");
-            editor.commit();
             checkpointLocation = newCheckpoint();
 
         }
@@ -346,6 +346,12 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
                         v.cancel();
                         v.vibrate(Constants.VIBRATION_PATTERN, 0);
                         isVibrating = true;
+
+                        //Toast.makeText(this, "Checkpoint reached", Toast.LENGTH_LONG).show();
+                        mp.stop();
+                        mp = MediaPlayer.create(this, R.raw.alarm);
+                        mp.start();
+                        checkpointLocation = newCheckpoint();
                     }
                 } else {
                     isVibrating = false;
@@ -421,8 +427,10 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public int calculatePoints(double distance, long time) {
-        Double d = new Double((10 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
-        return d.intValue(); //we need to send it as an integer
+        Double d = new Double((1000 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
+        int p = d.intValue(); //we need to send it as an integer
+        Toast.makeText(this, "+"+ String.valueOf(p) + " points", Toast.LENGTH_LONG).show();
+        return p;
     }
 
     public void resetTimer() {
