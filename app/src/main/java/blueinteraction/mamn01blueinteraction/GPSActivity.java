@@ -278,7 +278,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         //latitude_check_textview.setText(String.valueOf(checkpointLocation.getLatitude()));
         //longitude_check_textview.setText(String.valueOf(checkpointLocation.getLongitude()));
-        Toast.makeText(this, "Distance: " + (int) ourLocation.distanceTo(checkpointLocation) + "m", Toast.LENGTH_LONG).show();//show checkpoint
+        //Toast.makeText(this, "Distance: " + (int) ourLocation.distanceTo(checkpointLocation) + "m", Toast.LENGTH_LONG).show();//show checkpoint
 
         Float distance = ourLocation.distanceTo(checkpointLocation);
         if (distance < Constants.GAME_CHECKPOINT_MINDISTANCE_METERS) {
@@ -351,16 +351,32 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
                 //CHECK ANGLE TO LOCATION
                 if ((angle < minAngle) || (angle > (360 - minAngle))) {
                     if (!isVibrating) { //if it's not already vibrating
+                        float dist = ourLocation.distanceTo(checkpointLocation);
+                        double distD = dist;
+                        long vt = 500;
+                        if(dist<200){
+                            vt = vt-400;
+                        }
+                        else if (dist<300){
+                            vt = vt-300;
+                        }
+                        else if(dist<400){
+                            vt = vt-200;
+                        }
+                        else if(dist<500){
+                            vt = vt-100;
+                        }
+                        long[] vp = {0, vt, 2*vt};
                         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
                         v.cancel();
-                        v.vibrate(Constants.VIBRATION_PATTERN, 0);
+                        v.vibrate(vp, 0);
                         isVibrating = true;
 
                         //Toast.makeText(this, "Checkpoint reached", Toast.LENGTH_LONG).show();
-                        mp.stop();
-                        mp = MediaPlayer.create(this, R.raw.checkpointsuccess);
-                        mp.start();
-                        checkpointLocation = newCheckpoint();
+                        //mp.stop();
+                        //mp = MediaPlayer.create(this, R.raw.checkpointsuccess);
+                        //mp.start();
+                        //checkpointLocation = newCheckpoint();
                     }
                 } else {
                     isVibrating = false;
@@ -431,11 +447,15 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             oldCheckpoints.add(checkpointLocation);
         }
 
+        v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.cancel();
+        v.vibrate(2000);
+
         return l;
     }
 
     public int calculatePoints(double distance, long time) {
-        Double d = new Double((1000 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
+        Double d = new Double((10000 * distance / Long.valueOf(time).doubleValue())); //Points = 10*distance/game_time in seconds
         int p = d.intValue(); //we need to send it as an integer
         Toast.makeText(this, "Checkpoint reached! " + "\n" + "+"+ String.valueOf(p) + " points", Toast.LENGTH_LONG).show();
         return p;
