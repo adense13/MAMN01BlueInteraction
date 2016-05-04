@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, SensorEventListener {
 
@@ -106,8 +107,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     protected static final String TAG = "MainActivity";
     SharedPreferences highscore;
     SharedPreferences.Editor editor;
-    Set<String> highscoreSet;
-
     private CountDownTimer timer;
     private int score;
 
@@ -115,9 +114,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //MAPS-----------------------------------------------------------------------------------
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -154,18 +150,20 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
         //Highscore
         highscore = this.getSharedPreferences("CheckPointHighScore", Context.MODE_PRIVATE);
         editor = highscore.edit();
-       // highscoreSet = new HashSet<>();
         score =0;
-
-        //Double d = new Double(5.2); //Points = 10*distance/game_time in seconds
-        //score = score + d.intValue(); //we need to send it as an integer
 
         //Timer
         time_elasped = (TextView) findViewById(R.id.time_elasped);
         timer = new CountDownTimer(game_time *60*1000,1000){
-        //timer = new CountDownTimer(30000, 1000) {
+            String timeRemaining;
             public void onTick(long millisUntilFinished) {
-                time_elasped.setText("" + millisUntilFinished / 1000);
+                timeRemaining = String.format("%02d:%02d ",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                );
+
+                time_elasped.setText("" + timeRemaining);
             }
 
             public void onFinish() {
@@ -173,8 +171,6 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
                 int scoreLength = String.valueOf(score).length();
                 String space = "          ";
                 space = space.substring(0, space.length()-scoreLength);
-
-               // highscoreSet.add(Integer.toString(score) + " " + "          Tobias");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Date date = new Date();
                 String s = sdf.format(date);
@@ -192,10 +188,7 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void initViews() {
-//        mLatitudeTextView = (TextView) findViewById((R.id.latitude_textview));
-//        mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
-//        longitude_check_textview = (TextView) findViewById((R.id.longitude_check_textview))
-//       latitude_check_textview = (TextView) findViewById((R.id.latitude_check_textview));
+
         time_elasped = (TextView) findViewById((R.id.time_elasped));
 
         //COMPASS
@@ -257,12 +250,8 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        //mLatitudeTextView.setText(String.valueOf(location.getLatitude()));
-        //mLongitudeTextView.setText(String.valueOf(location.getLongitude()));
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        //ourLocation = location;
-        //score += 1;
         ourLocation.setLatitude(location.getLatitude());
         ourLocation.setLongitude(location.getLongitude());
         if (startLocation == null) {
@@ -272,12 +261,9 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
             mMap.addCircle((new CircleOptions()).center(startLatLng).radius(game_radius*1000));
             checkpointSpawnPlayerLocation = ourLocation;
             checkpointSpawnTime = System.currentTimeMillis();
-
             checkpointLocation = newCheckpoint();
 
         }
-        //latitude_check_textview.setText(String.valueOf(checkpointLocation.getLatitude()));
-        //longitude_check_textview.setText(String.valueOf(checkpointLocation.getLongitude()));
         //Toast.makeText(this, "Distance: " + (int) ourLocation.distanceTo(checkpointLocation) + "m", Toast.LENGTH_LONG).show();//show checkpoint
 
         Float distance = ourLocation.distanceTo(checkpointLocation);
