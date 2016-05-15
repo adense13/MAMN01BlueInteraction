@@ -25,21 +25,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/rotate_device"
-        android:textSize="30sp"
-        android:layout_marginTop="15dp"
+        android:textSize="25sp"
+        android:layout_marginTop="7dp"
         />
     <TextView android:id="@+id/move_yourself"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/move_yourself"
-        android:textSize="30sp"
-        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:layout_marginTop="7dp"
         />
     <TextView android:id="@+id/hear_sound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hear_sound"
-        android:textSize="30sp"
-        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:layout_marginTop="7dp"
         />
 </LinearLayout>
