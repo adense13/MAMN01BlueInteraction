@@ -30,9 +30,9 @@
     <string name="button_highscore">Highscore</string>
     <string name="button_help">Help</string>
     <string name="button_how_to_play">How to play</string>
-    <string name="how_to_play">Rotate the device horizontally until you feel a vibration.
-    then move the yourself in that direction until you hear a sound, that means you
-    have reached a checkpoint</string>
+    <string name="rotate_device">1. Rotate the device until you feel a vibration.</string>
+    <string name="move_yourself">2. Move yourself in that direction.</string>
+    <string name="hear_sound">3. When you hear a sound, you have reached the checkpoint.</string>
     <string name="title_activity_play_setup">Set up your game</string>
     <string name="title_activity_maps">Map</string>
 

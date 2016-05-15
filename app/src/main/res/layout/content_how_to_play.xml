@@ -21,9 +21,25 @@
         android:contentDescription="Animation"
         android:layout_gravity="center_horizontal"/>
 
-    <TextView android:id="@+id/how_to_play_text"
+    <TextView android:id="@+id/rotate_device"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/how_to_play"
-        android:textSize="30sp"/>
+        android:text="@string/rotate_device"
+        android:textSize="30sp"
+        android:layout_marginTop="15dp"
+        />
+    <TextView android:id="@+id/move_yourself"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/move_yourself"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView android:id="@+id/hear_sound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hear_sound"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        />
 </LinearLayout>
