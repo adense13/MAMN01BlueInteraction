@@ -340,16 +340,16 @@ public class GPSActivity extends AppCompatActivity implements OnMapReadyCallback
                         float dist = ourLocation.distanceTo(checkpointLocation);
                         double distD = dist;
                         long vt = 500;
-                        if(dist<200){
+                        if(dist< ((Constants.GAME_CHECKPOINT_MAX_SPAWN_DISTANCE)*0.2) ){ //original 200
                             vt = vt-400;
                         }
-                        else if (dist<300){
+                        else if (dist< ((Constants.GAME_CHECKPOINT_MAX_SPAWN_DISTANCE)*0.4) ){ //original 300
                             vt = vt-300;
                         }
-                        else if(dist<400){
+                        else if(dist< ((Constants.GAME_CHECKPOINT_MAX_SPAWN_DISTANCE)*0.6) ){ //original 400
                             vt = vt-200;
                         }
-                        else if(dist<500){
+                        else if(dist< ((Constants.GAME_CHECKPOINT_MAX_SPAWN_DISTANCE)*0.8) ){ //original 500
                             vt = vt-100;
                         }
                         long[] vp = {0, vt, 2*vt};

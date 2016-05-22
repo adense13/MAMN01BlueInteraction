@@ -36,8 +36,8 @@ public final class Constants {
     //WE USE THIS
     public static final double GAME_RADIUS = 0.005; //0.01; //1km approx
     public static final double GAME_CHECKPOINT_MINDISTANCE = 0.00035; //0.001; //110m approx
-    public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 100;
-    public static final int GAME_CHECKPOINT_MAX_SPAWN_DISTANCE = 550;
+    public static final int GAME_CHECKPOINT_MINDISTANCE_METERS = 50; //original = 100
+    public static final int GAME_CHECKPOINT_MAX_SPAWN_DISTANCE = 100; //original = 550
     public static final long SOUND_TIME_LVL_2 = 10000;
     public static final long SOUND_TIME_LVL_3 = 20000;
     public static final long[] VIBRATION_PATTERN = {0, Constants.VIBRATION_LENGTH, 2*Constants.VIBRATION_LENGTH}; //wait 0ms, vibrate 500ms, wait 1000ms, (insert a repeat of "0" into vibrate command to cause repeating vibrate)
